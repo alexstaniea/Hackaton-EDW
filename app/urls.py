@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 
 from app.views import (
 
@@ -9,10 +10,9 @@ from app.views import (
     UserProfileUpdateView,
     index,
     article_detail,
-    ReviewCreateView
+    ReviewCreateView,
+    index_review
 )
-
-from . import views
 
 urlpatterns = [
     path('', index, name='index'),
@@ -23,4 +23,7 @@ urlpatterns = [
     path('userprofile/<int:pk>/edit', UserProfileUpdateView.as_view(), name='user_profile_edit'),
     path('article/<int:pk>', article_detail, name='article_detail'),
     path('article/<int:pk>/review/create', ReviewCreateView.as_view(), name='review_create'),
+    path('article/<int:pk>/index_review', index_review, name='index_review'),
 ]
+
+

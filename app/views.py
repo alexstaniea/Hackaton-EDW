@@ -12,7 +12,7 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile, Cart, Article
+from app.models import User, UserProfile, Article, Review, Cart
 
 
 def index(request):
@@ -143,3 +143,21 @@ class CartDetailView(LoginRequiredMixin, View):
         #pk = self.kwargs['user_pk']
         cart = request.user.cart
         return render(request, 'cart_detail.html', {'cart': cart})
+
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ['text','nota']
+    template_name = 'review_create.html'
+
+    def form_valid(self, form):
+        article = Article.objects.get(id=self.kwargs['pk'])
+
+
+        def form_valid(self, form):
+            review = Review.objects.create(
+            article = article,
+            createt_by = request.user
+            )
+
+        return redirect(reverse_lazy("article_detail", kwargs={"pk": self.kwargs['pk']}))

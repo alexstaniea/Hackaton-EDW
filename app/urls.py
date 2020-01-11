@@ -6,7 +6,9 @@ from app.views import (
     LoginView,
     LogoutView,
     UserProfileView,
-    UserProfileUpdateView
+    UserProfileUpdateView,
+    CartDetailView,
+    cart_checkout
 )
 
 from . import views
@@ -18,4 +20,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('userprofile/<int:pk>', UserProfileView.as_view(), name='user_profile'),
     path('userprofile/<int:pk>/edit', UserProfileUpdateView.as_view(), name='user_profile_edit'),
+    path('cart/<int:pk>', CartDetailView.as_view(), name='cart_detail'),
+    path('cart_checkout/<int:pk>', cart_checkout, name='cart_checkout')
 ]

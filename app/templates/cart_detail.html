@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% csrf_token %}
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+        {% if cart.articles.count != 0 %}
+            {% for item in cart.articles %}
+            <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.price }}</td>
+                <td><a class="btn btn-primary" href="{% url 'remove_from_cart' item.id %}">Remove</a></td>
+            </tr>
+            {% endfor %}
+        {%else%}
+            <p>You don't have any products.</p>
+        {%endif%}
+
+
+        <tfooter>Total sum: {{cart.sum}}</tfooter>
+    </table>
+
+     <a class="btn btn-primary" href="{% url 'cart_checkout' user.id %}">Checkout</a>
+
+{% endblock %}

@@ -12,7 +12,7 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile
+from app.models import User, UserProfile, Cart, Article
 
 
 def index(request):
@@ -28,6 +28,7 @@ class RegisterView(CreateView):
         data = form.cleaned_data
         user = User.objects.create_user(username=data['username'],
                                         password=data['password1'])
+        Cart.objects.create(user_id=user, sum=0)
         UserProfile.objects.create(user=user)
         return redirect('index')
 
@@ -93,3 +94,41 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.save()
         self.request.user.save()
         return redirect(reverse_lazy("user_profile", kwargs={"pk": self.request.user.id}))
+
+
+def add_to_cart(request, article_id):
+    request.user.profile.first()
+    article = Article.objects.get(id=article_id)
+    cart = request.user.cart
+    cart.articles.add(article)
+    cart.sum += article.price
+
+
+def remove_from_cart(request, article_id):
+    article = Article.objects.get(id=article_id)
+    cart = request.user.cart
+    cart.articles.remove(article)
+    cart.sum -= article.price
+
+
+@login_required()
+def cart_checkout(request, pk):
+    cart=request.user.cart
+    user=request.user.profile.first()
+    if user.credit >= cart.sum:
+        user.credit -= cart.sum
+        cart.articles.clear()
+        cart.sum=0
+        return redirect('index')
+    else:
+        return render(request, 'cart_detail.html')
+
+
+
+class CartDetailView(LoginRequiredMixin, View):
+    template_name = 'cart_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        #pk = self.kwargs['user_pk']
+        cart = request.user.cart
+        return render(request, 'cart_detail.html', {'cart': cart})

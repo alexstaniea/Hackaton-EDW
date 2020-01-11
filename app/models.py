@@ -23,7 +23,7 @@ class Article(models.Model):
 
 
 class Cart(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE)
     articles = models.ManyToManyField(Article, related_name='carts', blank=True)
     sum = models.FloatField()
 

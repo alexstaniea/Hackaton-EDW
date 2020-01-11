@@ -12,10 +12,6 @@
           <div class="card-body">
             <h5 class="card-title">{{ rev.text }}</h5>
               <h6 class="card-title">{{ rev.nota }}</h6>
-<!--             {% if user == review.created_by %}-->
-
-
-<!--              {%endif%}-->
              <a href="{% url 'review_delete' article.id rev.id %}" class="btn btn-primary">Delete review</a>
 
           </div>

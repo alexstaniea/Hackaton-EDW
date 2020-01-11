@@ -165,3 +165,12 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
             **form.cleaned_data
         )
         return redirect(reverse_lazy("article_detail", kwargs={"pk": self.kwargs['pk']}))
+
+
+class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = "review_delete.html"
+    model = Review
+
+
+    def get_success_url(self):
+        return reverse_lazy("index_review", kwargs={"pk": self.kwargs['article_pk']})

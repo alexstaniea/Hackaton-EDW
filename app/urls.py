@@ -18,7 +18,8 @@ from app.views import (
     add_to_cart,
     remove_from_cart,
     article_detail,
-    ReviewCreateView
+    ReviewCreateView,
+    ReviewDeleteView
 )
 
 urlpatterns = [
@@ -30,11 +31,11 @@ urlpatterns = [
     path('userprofile/<int:pk>/edit', UserProfileUpdateView.as_view(), name='user_profile_edit'),
     path('article/<int:pk>', article_detail, name='article_detail'),
     path('article/<int:pk>/review/create', ReviewCreateView.as_view(), name='review_create'),
+    path('article/<int:article_pk>/review/delete/<int:pk>', ReviewDeleteView.as_view(), name='review_delete'),
     path('cart/<int:pk>', CartDetailView.as_view(), name='cart_detail'),
     path('cart_checkout/<int:pk>', cart_checkout, name='cart_checkout'),
     path('article/<int:pk>/add', add_to_cart, name='add_to_cart'),
-    path('article/<int:pk>/remove', remove_from_cart, name='remove_from_cart')
-
+    path('article/<int:pk>/remove', remove_from_cart, name='remove_from_cart'),
     path('article/<int:pk>/index_review', index_review, name='index_review'),
 ]
 

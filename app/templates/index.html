@@ -1,1 +1,23 @@
 {% extends 'base.html' %}
+
+{% block title %} ShopApp{% endblock %}
+
+{% block content %}
+
+
+  <div class="row container">
+    {% for article in article_list %}
+      <div class="col-sm-6 p-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ article.title }}</h5>
+              <h6 class="card-title">{{ article.description }}</h6>
+
+
+            <a href="{% url 'article_detail' article.id %}" class="btn btn-primary">See article details</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

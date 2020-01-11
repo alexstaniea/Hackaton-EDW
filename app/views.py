@@ -12,11 +12,16 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile
+from app.models import User, UserProfile,Article
 
 
 def index(request):
-    return render(request, 'index.html')
+    article_list = Article.objects.all()
+    return render(request, 'index.html', {'article_list': article_list})
+
+def article_detail(request, pk):
+    article = Article.objects.get(id=pk)
+    return render(request, "article_detail.html", {"article": article})
 
 
 class RegisterView(CreateView):

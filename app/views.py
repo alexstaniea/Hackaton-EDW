@@ -19,6 +19,13 @@ def index(request):
     article_list = Article.objects.all()
     return render(request, 'index.html', {'article_list': article_list})
 
+def index_review(request, pk):
+    article = Article.objects.get(id = pk)
+    review_list = Review.objects.filter(article_id = article.id)
+    #import ipdb; ipdb.set_trace()
+    return render(request, 'index_review.html', {"article": article,
+                                                 'review_list': review_list})
+
 
 def article_detail(request, pk):
     article = Article.objects.get(id=pk)
@@ -152,12 +159,9 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         article = Article.objects.get(id=self.kwargs['pk'])
-
-
-        def form_valid(self, form):
-            review = Review.objects.create(
+        review = Review.objects.create(
             article = article,
-            createt_by = request.user
-            )
-
+            created_by = self.request.user,
+            **form.cleaned_data
+        )
         return redirect(reverse_lazy("article_detail", kwargs={"pk": self.kwargs['pk']}))

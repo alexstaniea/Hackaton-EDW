@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 
 from app.views import (
 
@@ -12,13 +13,13 @@ from app.views import (
     UserProfileUpdateView,
     index,
     article_detail,
+    ReviewCreateView,
+    index_review,
     add_to_cart,
     remove_from_cart,
     article_detail,
     ReviewCreateView
 )
-
-from . import views
 
 urlpatterns = [
     path('', index, name='index'),
@@ -34,4 +35,7 @@ urlpatterns = [
     path('article/<int:pk>/add', add_to_cart, name='add_to_cart'),
     path('article/<int:pk>/remove', remove_from_cart, name='remove_from_cart')
 
+    path('article/<int:pk>/index_review', index_review, name='index_review'),
 ]
+
+

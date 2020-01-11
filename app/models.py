@@ -7,8 +7,8 @@ User = get_user_model()
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='profile')
     birthday = models.DateField(blank=True, null=True)
-    #avatar = models.FileField(upload_to='media/', blank=True, null=True)
-    credit = models.FloatField()
+    address = models.CharField(max_length=30, blank=True, null=True)
+    credit = models.FloatField(default=0)
 
 class Category(models.Model):
     name = models.CharField(max_length=30)

@@ -12,7 +12,7 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile,Article
+from app.models import User, UserProfile, Article, Review
 
 
 def index(request):
@@ -98,3 +98,21 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         self.object.save()
         self.request.user.save()
         return redirect(reverse_lazy("user_profile", kwargs={"pk": self.request.user.id}))
+
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ['text','nota']
+    template_name = 'review_create.html'
+
+    def form_valid(self, form):
+        article = Article.objects.get(id=self.kwargs['pk'])
+
+
+        def form_valid(self, form):
+            review = Review.objects.create(
+            article = article,
+            createt_by = request.user
+            )
+
+        return redirect(reverse_lazy("article_detail", kwargs={"pk": self.kwargs['pk']}))

@@ -9,12 +9,15 @@ from app.views import (
     UserProfileUpdateView,
     CartDetailView,
     cart_checkout
+    UserProfileUpdateView,
+    index,
+    article_detail
 )
 
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', index, name='index'),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
@@ -22,4 +25,5 @@ urlpatterns = [
     path('userprofile/<int:pk>/edit', UserProfileUpdateView.as_view(), name='user_profile_edit'),
     path('cart/<int:pk>', CartDetailView.as_view(), name='cart_detail'),
     path('cart_checkout/<int:pk>', cart_checkout, name='cart_checkout')
+    path('article/<int:pk>', article_detail, name='article_detail')
 ]

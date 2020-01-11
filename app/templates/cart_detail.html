@@ -2,14 +2,14 @@
 
 {% block content %}
 {% csrf_token %}
-    <table>
+    <table class="table">
         <tr>
             <th>Product</th>
             <th>Quantity</th>
             <th>Total Price</th>
         </tr>
         {% if cart.articles.count != 0 %}
-            {% for item in cart.articles %}
+            {% for item in cart.articles.all %}
             <tr>
                 <td>{{ item.title }}</td>
                 <td>{{ item.description }}</td>
@@ -22,7 +22,7 @@
         {%endif%}
 
 
-        <tfooter>Total sum: {{cart.sum}}</tfooter>
+        <tfooter>Total sum: {{ cart.sum }}</tfooter>
     </table>
 
      <a class="btn btn-primary" href="{% url 'cart_checkout' user.id %}">Checkout</a>

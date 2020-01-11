@@ -12,13 +12,13 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile,Article
 from app.models import User, UserProfile, Cart, Article
 
 
 def index(request):
     article_list = Article.objects.all()
     return render(request, 'index.html', {'article_list': article_list})
+
 
 def article_detail(request, pk):
     article = Article.objects.get(id=pk)
@@ -65,7 +65,6 @@ class LogoutView(LoginRequiredMixin, View):
         return redirect('index')
 
 
-
 class UserProfileView(LoginRequiredMixin, DetailView):
     template_name = 'user_profile.html'
     context_object_name = 'userprofile'
@@ -102,33 +101,39 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
         return redirect(reverse_lazy("user_profile", kwargs={"pk": self.request.user.id}))
 
 
-def add_to_cart(request, article_id):
-    request.user.profile.first()
-    article = Article.objects.get(id=article_id)
+@login_required(login_url='login')
+def add_to_cart(request, pk):
+    article = Article.objects.get(id=pk)
     cart = request.user.cart
     cart.articles.add(article)
     cart.sum += article.price
+    cart.save()
+    return redirect('index')
 
 
-def remove_from_cart(request, article_id):
-    article = Article.objects.get(id=article_id)
+@login_required(login_url='login')
+def remove_from_cart(request, pk):
+    article = Article.objects.get(id=pk)
     cart = request.user.cart
     cart.articles.remove(article)
     cart.sum -= article.price
+    cart.save()
+    return render(request, 'cart_detail.html', {'cart': cart})
 
 
-@login_required()
+@login_required(login_url='login')
 def cart_checkout(request, pk):
-    cart=request.user.cart
-    user=request.user.profile.first()
+    cart = request.user.cart
+    user = request.user.profile.first()
     if user.credit >= cart.sum:
         user.credit -= cart.sum
         cart.articles.clear()
-        cart.sum=0
+        cart.sum = 0
+        cart.save()
+        user.save()
         return redirect('index')
     else:
-        return render(request, 'cart_detail.html')
-
+        return render(request, 'cart_detail.html', {'cart': cart})
 
 
 class CartDetailView(LoginRequiredMixin, View):

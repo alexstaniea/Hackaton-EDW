@@ -10,6 +10,7 @@ class UserProfile(models.Model):
     address = models.CharField(max_length=30, blank=True, null=True)
     credit = models.FloatField(default=0)
 
+
 class Category(models.Model):
     name = models.CharField(max_length=30)
 

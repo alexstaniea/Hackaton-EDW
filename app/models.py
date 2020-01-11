@@ -13,6 +13,9 @@ class UserProfile(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
 
 class Article(models.Model):
     photo = models.FileField(upload_to='media/', blank=True, null=True)

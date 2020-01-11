@@ -12,12 +12,19 @@ from django.views.generic import (
 )
 
 from app.forms import UserProfileForm
-from app.models import User, UserProfile, Cart, Article
+from app.models import User, UserProfile, Article, Review, Cart
 
 
 def index(request):
     article_list = Article.objects.all()
     return render(request, 'index.html', {'article_list': article_list})
+
+def index_review(request, pk):
+    article = Article.objects.get(id = pk)
+    review_list = Review.objects.filter(article_id = article.id)
+    #import ipdb; ipdb.set_trace()
+    return render(request, 'index_review.html', {"article": article,
+                                                 'review_list': review_list})
 
 
 def article_detail(request, pk):
@@ -143,3 +150,27 @@ class CartDetailView(LoginRequiredMixin, View):
         #pk = self.kwargs['user_pk']
         cart = request.user.cart
         return render(request, 'cart_detail.html', {'cart': cart})
+
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Review
+    fields = ['text','nota']
+    template_name = 'review_create.html'
+
+    def form_valid(self, form):
+        article = Article.objects.get(id=self.kwargs['pk'])
+        review = Review.objects.create(
+            article = article,
+            created_by = self.request.user,
+            **form.cleaned_data
+        )
+        return redirect(reverse_lazy("article_detail", kwargs={"pk": self.kwargs['pk']}))
+
+
+class ReviewDeleteView(LoginRequiredMixin, DeleteView):
+    template_name = "review_delete.html"
+    model = Review
+
+
+    def get_success_url(self):
+        return reverse_lazy("index_review", kwargs={"pk": self.kwargs['article_pk']})

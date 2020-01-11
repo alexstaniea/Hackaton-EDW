@@ -32,6 +32,10 @@ class Cart(models.Model):
     sum = models.FloatField()
 
 
-
+class Review(models.Model):
+    article= models.ForeignKey(Article, on_delete=models.CASCADE, related_name='article_reviews')
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews")
+    text = models.CharField(max_length=30, blank=True, null=True)
+    nota = models.IntegerField()
 
 

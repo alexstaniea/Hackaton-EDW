@@ -13,5 +13,6 @@ class ArticleAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(models.Article,ArticleAdmin)
 admin.site.register(models.Cart)
+admin.site.register(models.Review)
 admin.site.register(models.Category)
 admin.site.register(models.UserProfile)

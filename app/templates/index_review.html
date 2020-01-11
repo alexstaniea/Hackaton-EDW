@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} ShopApp{% endblock %}
+
+{% block content %}
+
+
+  <div class="row container">
+    {% for rev in review_list %}
+      <div class="col-sm-6 p-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ rev.text }}</h5>
+              <h6 class="card-title">{{ rev.nota }}</h6>
+             <a href="{% url 'review_delete' article.id rev.id %}" class="btn btn-primary">Delete review</a>
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+       <a href="{% url 'review_create' article.id %}" class="btn btn-primary">Create review</a>
+
+  </div>
+{% endblock %}
